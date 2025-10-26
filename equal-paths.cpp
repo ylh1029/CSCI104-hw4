@@ -1,6 +1,5 @@
 #ifndef RECCHECK
 //if you want to add any #includes like <iostream> you must do them here (before the next endif)
-
 #endif
 
 #include "equal-paths.h"
@@ -26,8 +25,15 @@ int height(Node* root){
     }
 
     else{
-        return height(root->left) + height(root->right) + 1;
-    }
+        int lheight = height(root->left);
+        int rheight = height(root->right);
+        if(lheight > rheight){
+            return lheight + 1;
+        }
+        else{
+            return rheight + 1;
+        }
+    } 
 }
 
 
@@ -45,13 +51,14 @@ bool equalPaths(Node * root)
     else if (root->left && root->right){
         int lheight = height(root->left);
         int rheight = height(root->right);
-
-        return lheight == rheight && equalPaths(root->left) && equalPaths(root->right);
+        return (lheight == rheight) && equalPaths(root->left) && equalPaths(root->right);
     }
 
+    else if(root->left){
+        return equalPaths(root->left);
+    }
     else{
-        return true;
+        return equalPaths(root->right);
     }
-
 }
 
