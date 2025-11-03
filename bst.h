@@ -248,6 +248,8 @@ protected:
 
     // Add helper functions here
     static Node<Key, Value>* successor(Node<Key, Value>* current);
+    bool compareBalance(Node<Key, Value>* left, Node<Key, Value>* right) const;
+    int getHeight(Node<Key, Value>* current) const;
 
 protected:
     Node<Key, Value>* root_;
@@ -793,7 +795,33 @@ template<typename Key, typename Value>
 bool BinarySearchTree<Key, Value>::isBalanced() const
 {
     // TODO
-    return true;
+    Node<Key, Value>* temp = root_;
+    bool result = true;
+    while(temp){
+        if(temp->getLeft() && temp->getRight()){
+            result = compareBalance(temp->getLeft(), temp->getRight());
+        }
+
+        else if(!temp->getLeft() && !temp->getRight()){} 
+
+        else if(temp->getLeft()){
+        //Only has left
+            if(temp->getLeft()->getLeft() || temp->getLeft()->getRight()){
+            //The left child goes deeper
+                result = false;
+            }
+        }
+
+        else{
+        //Only has right
+            if(temp->getRight()->getLeft() || temp->getRight()->getRight()){
+            //The right child goes deeper
+                result = false;
+            }
+        }
+    }
+
+    return result;
 }
 
 
@@ -880,6 +908,46 @@ void BinarySearchTree<Key, Value>::nodeSwap( Node<Key,Value>* n1, Node<Key,Value
         this->root_ = n1;
     }
 
+}
+
+template<typename Key, typename Value>
+bool BinarySearchTree<Key, Value>::compareBalance(Node<Key, Value>* left, Node<Key, Value>* right)const{
+    int balance = getHeight(right) - getHeight(left);
+
+    if(balance > -2 && balance < 2){
+        return true;
+    }
+
+    else{
+        return false;
+    }
+}
+
+template<typename Key, typename Value>
+int BinarySearchTree<Key, Value>::getHeight(Node<Key, Value>* root) const{
+    if(!root){
+		return 0;
+	}
+
+	else if (root->right && root->left){
+		int rightTree = height(root->right);
+		int leftTree = height(root->left);
+
+		if(rightTree > leftTree){
+			return rightTree+1;
+		}
+		else{
+			return leftTree+1;
+		}
+	}
+
+	else if(root->right){
+		return height(root->right) + 1;
+	}
+
+	else{
+		return height(root->left) + 1;
+	}
 }
 
 /**
