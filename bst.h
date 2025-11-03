@@ -250,6 +250,7 @@ protected:
     static Node<Key, Value>* successor(Node<Key, Value>* current);
     bool compareBalance(Node<Key, Value>* left, Node<Key, Value>* right) const;
     int getHeight(Node<Key, Value>* current) const;
+    bool isBalancedHelper(Node<Key, Value>* root) const;
 
 protected:
     Node<Key, Value>* root_;
@@ -379,7 +380,6 @@ BinarySearchTree<Key, Value>::iterator::operator++()
       return *this;
     }
 
-    std::cout << "This o/p should never be outputted. Something went wrong" << std::endl;
     return *this; //This should never be run
 }
 
@@ -647,11 +647,6 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
             found = true;
         }
     }
-
-    if(!found){
-    //For debugging purpose
-        std::cout << key << " cannot be found in this tree" << std::endl;
-    }
 }
 
 template<class Key, class Value>
@@ -717,7 +712,6 @@ BinarySearchTree<Key, Value>::successor(Node<Key, Value>* current)
         }
         return current;
     }
-    std::cout << "This should never be run" << std::endl;
     return current;
 }
 
@@ -795,33 +789,7 @@ template<typename Key, typename Value>
 bool BinarySearchTree<Key, Value>::isBalanced() const
 {
     // TODO
-    Node<Key, Value>* temp = root_;
-    bool result = true;
-    while(temp){
-        if(temp->getLeft() && temp->getRight()){
-            result = compareBalance(temp->getLeft(), temp->getRight());
-        }
-
-        else if(!temp->getLeft() && !temp->getRight()){} 
-
-        else if(temp->getLeft()){
-        //Only has left
-            if(temp->getLeft()->getLeft() || temp->getLeft()->getRight()){
-            //The left child goes deeper
-                result = false;
-            }
-        }
-
-        else{
-        //Only has right
-            if(temp->getRight()->getLeft() || temp->getRight()->getRight()){
-            //The right child goes deeper
-                result = false;
-            }
-        }
-    }
-
-    return result;
+    return isBalancedHelper(root_);
 }
 
 
@@ -929,9 +897,9 @@ int BinarySearchTree<Key, Value>::getHeight(Node<Key, Value>* root) const{
 		return 0;
 	}
 
-	else if (root->right && root->left){
-		int rightTree = height(root->right);
-		int leftTree = height(root->left);
+	else if (root->getRight() && root->getLeft()){
+		int rightTree = getHeight(root->getRight());
+		int leftTree = getHeight(root->getLeft());
 
 		if(rightTree > leftTree){
 			return rightTree+1;
@@ -941,12 +909,27 @@ int BinarySearchTree<Key, Value>::getHeight(Node<Key, Value>* root) const{
 		}
 	}
 
-	else if(root->right){
-		return height(root->right) + 1;
+	else if(root->getRight()){
+		return getHeight(root->getRight()) + 1;
 	}
 
 	else{
-		return height(root->left) + 1;
+		return getHeight(root->getLeft()) + 1;
+	}
+}
+
+template<typename Key, typename Value>
+bool BinarySearchTree<Key, Value>::isBalancedHelper(Node<Key, Value>* root) const{
+  if(!root){
+		return true;
+	}
+
+	else{
+		int rightHeight = getHeight(root->getRight());
+		int leftHeight = getHeight(root->getLeft());
+
+		return isBalancedHelper(root->getRight()) && isBalancedHelper(root->getLeft()) && 
+		((rightHeight + 1 == leftHeight) || (leftHeight + 1 == rightHeight) || (leftHeight == rightHeight));
 	}
 }
 
