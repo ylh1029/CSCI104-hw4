@@ -225,6 +225,7 @@ public:
         friend class BinarySearchTree<Key, Value>;
         iterator(Node<Key,Value>* ptr);
         Node<Key, Value> *current_;
+        const BinarySearchTree* container_;
     };
 
 public:
@@ -247,7 +248,8 @@ protected:
     virtual void nodeSwap( Node<Key,Value>* n1, Node<Key,Value>* n2) ;
 
     // Add helper functions here
-
+    Node<Key, Value>* getSmallestNode_Subtree(Node<Key, Value>* sub_root) const;
+    const Key& getMaxKey() const;
 
 protected:
     Node<Key, Value>* root_;
@@ -335,9 +337,28 @@ template<class Key, class Value>
 typename BinarySearchTree<Key, Value>::iterator&
 BinarySearchTree<Key, Value>::iterator::operator++()
 {
-    // TODO
-    current_ = current_ + 1;
-    return *this;
+    if(current_ -> getRight()){
+    //If the right child exists
+        current_ = container_ -> getSmallestNode_Subtree(current_ -> getRight());
+        return *this;
+    }
+
+    if(current_ -> getParent()->getLeft() == current_){
+    //If current_ is a left child of its parent
+        current_ = current_ -> getParent();
+        return *this;
+    }
+
+    if(current_ -> getParent() -> getRight() == current_){
+    //If current_ is a right child of its parent
+        current_ = current_ -> getParent() -> getParent();
+        return *this;
+    }
+
+    if(current_ -> getKey() == container_ -> getMaxKey()){
+        current_ = nullptr;
+        return *this;
+    }
 }
 
 /*
@@ -508,11 +529,11 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
     while(!found && temp != nullptr){
         if(temp -> getKey() > key){
-            temp = temp -> getRight();
+            temp = temp -> getLeft();
         }
 
         else if(temp -> getKey() < key){
-            temp = temp -> getLeft();
+            temp = temp -> getRight();
         }
 
         else{
@@ -561,11 +582,11 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
             delete temp;
             found = true;
         }
+    }
 
-        if(!found){
-        //For debugging purpose
-            std::cout << key << "cannot be found in this tree" << std::endl;
-        }
+    if(!found){
+    //For debugging purpose
+        std::cout << key << " cannot be found in this tree" << std::endl;
     }
 }
 
@@ -754,6 +775,27 @@ void BinarySearchTree<Key, Value>::nodeSwap( Node<Key,Value>* n1, Node<Key,Value
     }
 
 }
+
+template<typename Key, typename Value>
+Node<Key, Value>* BinarySearchTree<Key, Value>::getSmallestNode_Subtree(Node<Key, Value>* sub_root) const{
+    while(sub_root->getLeft()){
+        sub_root -> getLeft();
+    }
+
+    return sub_root;
+}
+
+template<typename Key, typename Value>
+const Key& BinarySearchTree<Key, Value>::getMaxKey() const{
+    Node<Key, Value>* temp = root_;
+    while(temp->getRight()){
+        temp = temp->getRight();
+    }
+
+    return temp -> getKey();
+}
+
+
 
 /**
  * Lastly, we are providing you with a print function,
