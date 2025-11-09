@@ -478,7 +478,7 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value>* target){
 //Rotate right means right heavy
     if(target -> getRight() -> getLeft() && target -> getRight() -> getRight()){
     //Target_child has two children
-        AVLTree<Key, Value> left_child = target -> getRight() -> getLeft();
+        AVLNode<Key, Value>* left_child = target -> getRight() -> getLeft();
         target -> getRight() -> setLeft(target);
         target -> getRight() -> setParent(target->getParent());
         target -> setParent(target -> getRight());
@@ -501,7 +501,7 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value>* target){
 //Rotate right means left heavy
     if(target -> getLeft() -> getLeft() && target -> getLeft() -> getRight()){
     //Target_child has two children
-        AVLTree<Key, Value> right_child = target -> getLeft() -> getRight();
+        AVLNode<Key, Value>* right_child = target -> getLeft() -> getRight();
         target -> getLeft() -> setRight(target);
         target -> getLeft() -> setParent(target->getParent());
         target -> setParent(target -> getLeft());
