@@ -143,6 +143,7 @@ private:
     void rotateLeft(AVLNode<Key, Value>* target);
     void removeFix(AVLNode<Key, Value>* curr, int diff);
     AVLNode <Key, Value>* getRoot() const;
+    void setRoot(AVLNode<Key, Value>* value);
 };
 
 /*
@@ -158,7 +159,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 
     if(getRoot() == nullptr){
         AVLNode<Key, Value>* add = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
-        getRoot() = add; 
+        setRoot(add);
         add->setBalance(0);
         found = true;
         return;
@@ -191,7 +192,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 
         else{
             found = true;
-            temp -> setValue(keyValuePair.second);
+            temp -> setValue(new_item.second);
         }
     }
 
@@ -249,7 +250,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
             if(temp -> getLeft() == nullptr && temp -> BinarySearchTree<Key, Value>::getRight() == nullptr){
             //Zero children
               if(temp == getRoot()){
-                getRoot() = nullptr;
+                setRoot(nullptr);
               }
 
               else{
@@ -323,7 +324,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
                 if(temp == getRoot()){
                 //If temp had no parent(): root
-                  getRoot() = child;
+                  setRoot(child);
                 }
 
                 else if(temp->getParent()->getRight() == temp){
@@ -602,6 +603,16 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* curr, int diff){
 template <class Key, class Value>
 AVLNode<Key, Value>* AVLTree<Key, Value>::getRoot() const{
     return static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::root_);
+}
+
+template <class Key, class Value>
+void AVLTree<Key, Value>::setRoot(AVLNode<Key, Value>* value){
+    if(!value){
+        BinarySearchTree<Key, Value>::setRoot(nullptr);
+    }
+    else{
+        BinarySearchTree<Key, Value>::setRoot(static_cast<Node<Key, Value>*(value));
+    }
 }
 
 

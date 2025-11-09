@@ -251,6 +251,7 @@ protected:
     bool compareBalance(Node<Key, Value>* left, Node<Key, Value>* right) const;
     int getHeight(Node<Key, Value>* current) const;
     bool isBalancedHelper(Node<Key, Value>* root) const;
+    void setRoot(Node<Key, Value>* value);
 
 protected:
     Node<Key, Value>* root_;
@@ -931,6 +932,11 @@ bool BinarySearchTree<Key, Value>::isBalancedHelper(Node<Key, Value>* root) cons
 		return isBalancedHelper(root->getRight()) && isBalancedHelper(root->getLeft()) && 
 		((rightHeight + 1 == leftHeight) || (leftHeight + 1 == rightHeight) || (leftHeight == rightHeight));
 	}
+}
+
+template<typename Key, typename Value>
+void BinarySearchTree<Key, Value>::setRoot(Node<Key, Value>* value){
+    root_ = value;
 }
 
 /**
