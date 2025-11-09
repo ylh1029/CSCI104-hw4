@@ -229,8 +229,8 @@ template<class Key, class Value>
 void AVLTree<Key, Value>:: remove(const Key& key)
 {
     bool found = false;
-    AVLTree<Key, Value>* temp = getRoot();
-    AVLTree<Key, Value>* parent;
+    AVLNode<Key, Value>* temp = getRoot();
+    AVLNode<Key, Value>* parent;
     int diff;
     bool right = true;
 
@@ -273,7 +273,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
             else if(temp -> getLeft() && temp -> getRight()){
             //Two children
                 //Swap the predecessor with the current Node
-                    AVLTree<Key, Value>* pred = predecessor(temp);
+                    AVLNode<Key, Value>* pred = predecessor(temp);
                     nodeSwap(temp, pred);
 
                     if(temp->getParent()){
@@ -309,7 +309,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
             else{
             //One child
-                AVLTree<Key, Value>* child;
+                AVLNode<Key, Value>* child;
                 if(temp->getRight()){
                 //Temp has right child only
                     temp->getRight()->setParent(temp->getParent());
