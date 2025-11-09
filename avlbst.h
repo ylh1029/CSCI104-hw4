@@ -273,7 +273,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
             else if(temp -> getLeft() && temp -> getRight()){
             //Two children
                 //Swap the predecessor with the current Node
-                    AVLNode<Key, Value>* pred = AVLTree<Key, Value>::predecessor(temp);
+                    AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>AVLTree<Key, Value>::predecessor(temp);
                     nodeSwap(temp, pred);
 
                     if(temp->getParent()){
