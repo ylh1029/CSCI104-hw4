@@ -166,7 +166,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
     }
 
     while (!found){
-        if(temp->getKey() > target_key){
+        if(temp->Node<Key, Value>::getKey() > target_key){
             if(temp->getLeft() == nullptr){
                 Node<Key, Value>* add = new Node<Key, Value>(new_item.first, new_item.second, temp);
                 temp -> setLeft(add);
@@ -178,7 +178,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
             }
         }
 
-        else if(temp->getKey() < target_key){
+        else if(temp->Node<Key, Value>::getKey() < target_key){
             if(temp -> getRight() == nullptr){
                 Node<Key, Value>* add = new Node<Key, Value>(new_item.first, new_item.second, temp);
                 temp -> setRight(add);
@@ -237,17 +237,17 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     while(!found && temp != nullptr){
     //This while loop finds the value and removes it: 
     //Number of child is considered 
-        if(temp -> getKey() > key){
+        if(temp -> Node<Key, Value>::getKey() > key){
             temp = temp -> getLeft();
         }
 
-        else if(temp -> BinarySearchTree<Key, Value>::getKey() < key){
+        else if(temp -> Node<Key, Value>::getKey() < key){
             temp = temp -> getRight();
         }
 
         else{
         //Key for removal was found
-            if(temp -> getLeft() == nullptr && temp -> BinarySearchTree<Key, Value>::getRight() == nullptr){
+            if(temp -> getLeft() == nullptr && temp -> Node<Key, Value>::getRight() == nullptr){
             //Zero children
               if(temp == getRoot()){
                 setRoot(nullptr);
