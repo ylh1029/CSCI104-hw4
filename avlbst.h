@@ -602,7 +602,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* curr, int diff){
 
 template <class Key, class Value>
 AVLNode<Key, Value>* AVLTree<Key, Value>::getRoot() const{
-    return static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::root_);
+    return static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::getRoot());
 }
 
 template <class Key, class Value>
