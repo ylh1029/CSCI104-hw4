@@ -203,7 +203,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
     }
 
     else if(temp -> getParent() -> getBalance() == 1){
-        temp -> getParent() -> setBalance(0)
+        temp -> getParent() -> setBalance(0);
     }
 
     else{
@@ -371,7 +371,7 @@ void AVLTree<Key, Value>::insert_fix(AVLNode<Key, Value>* parent, AVLNode<Key, V
         return;
     }
 
-    AVLNode<Key, Value> grandParent = parent -> getParent();
+    AVLNode<Key, Value>* grandParent = parent -> getParent();
 
     if(!grandParent){
         return;
@@ -611,7 +611,7 @@ void AVLTree<Key, Value>::setRoot(AVLNode<Key, Value>* value){
         BinarySearchTree<Key, Value>::setRoot(nullptr);
     }
     else{
-        BinarySearchTree<Key, Value>::setRoot(static_cast<Node<Key, Value>*(value));
+        BinarySearchTree<Key, Value>::setRoot(static_cast<Node<Key, Value>*>(value));
     }
 }
 
