@@ -142,7 +142,7 @@ private:
     void rotateRight(AVLNode<Key, Value>* target);
     void rotateLeft(AVLNode<Key, Value>* target);
     void removeFix(AVLNode<Key, Value>* curr, int diff);
-    AVLNode <Key, Value>* getRoot() const;
+    AVLNode<Key, Value>* getRoot() const;
     void setRoot(AVLNode<Key, Value>* value);
 };
 
@@ -385,7 +385,7 @@ void AVLTree<Key, Value>::insert_fix(AVLNode<Key, Value>* parent, AVLNode<Key, V
         }
 
         else if(grandParent -> getBalance() == -1){
-            insertFix(grandParent, parent);
+            insert_fix(grandParent, parent);
         }
 
         else{
@@ -434,7 +434,7 @@ void AVLTree<Key, Value>::insert_fix(AVLNode<Key, Value>* parent, AVLNode<Key, V
         }
 
         else if(grandParent -> getBalance() == 1){
-            insertFix(grandParent, parent);
+            insert_fix(grandParent, parent);
         }
 
         else{
@@ -527,7 +527,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* curr, int diff){
 
     int ndiff = 0;
 
-    AVLNode<Key, Value> parent = curr -> getParent();
+    AVLNode<Key, Value>* parent = curr -> getParent();
     
     if(parent && parent -> getLeft() == curr){
     //Curr is the left child
@@ -546,7 +546,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* curr, int diff){
     else{
     //diff = -1
         if(curr -> getBalance() + diff == -2){
-            AVLNode<Key, Value> child = curr -> getLeft();
+            AVLNode<Key, Value>* child = curr -> getLeft();
 
             if(child -> getBalance() == -1){
             //Zig-zig case
@@ -565,7 +565,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* curr, int diff){
 
             else{
             //Zig-zag case
-                AVLNode<Key, Value> grandParent = child -> getRight();
+                AVLNode<Key, Value>* grandParent = child -> getRight();
                 rotateLeft(child);
                 rotateRight(curr);
                 
